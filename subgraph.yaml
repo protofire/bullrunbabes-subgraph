@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
@@ -8,6 +8,7 @@ dataSources:
     source:
       address: "0x9f967830E4bb188ff0acdE9D32d53db059afe111"
       abi: BullrunBabesCoordinator
+      startBlock: 11865594
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

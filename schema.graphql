@@ -1,6 +1,10 @@
-type ExampleEntity @entity {
+type Card @entity {
   id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  tokenId: BigInt! # uint256
+  tokenId: BigInt!
+  cardTypeId: BigInt
+  cid: String
+  owner: Bytes
+  queryId: Bytes
+  serial: BigInt
+  tier: BigInt
 }

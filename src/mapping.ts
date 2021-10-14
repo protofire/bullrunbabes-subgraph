@@ -1,6 +1,5 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { log } from "matchstick-as"
 import {
-  BullrunBabesCoordinator,
   CardAllocated,
   RandomInitiated,
   RandomReceived,
@@ -8,31 +7,42 @@ import {
   RoleGranted,
   RoleRevoked
 } from "../generated/BullrunBabesCoordinator/BullrunBabesCoordinator"
-import { ExampleEntity } from "../generated/schema"
+import { Card } from "../generated/schema"
+
+
+export { runTests } from "./tests/mapping.test"
+
 
 export function handleCardAllocated(event: CardAllocated): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+  log.warning("Here everything is ok", [])
+  let tokenId = event.params.tokenId
+  log.warning("can't log this {}", [tokenId.toString()])
+  let cardId = tokenId.toHexString()
+  /*
+  let cardTypeId = event.params.cardTypeId
+  let cid = event.params.cid
+  let owner = event.params.owner
+  let queryId = event.params.queryId
+  let serial = event.params.serial
+  let tier = event.params.tier
+  */
+  let card = Card.load(cardId)
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
-
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+  if (!card) {
+    card = new Card(cardId)
   }
-
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.owner = event.params.owner
-  entity.tokenId = event.params.tokenId
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
+  
+  card.tokenId = tokenId
+/* 
+  card.serial = serial
+  card.tier = tier
+  card.queryId = queryId
+  
+  card.owner = owner
+  card.cardTypeId = cardTypeId
+  card.cid = cid
+  */
+  card.save()
 
   // Note: If a handler doesn't require existing field values, it is faster
   // _not_ to load the entity from the store. Instead, create it fresh with
@@ -83,3 +93,4 @@ export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
 export function handleRoleGranted(event: RoleGranted): void {}
 
 export function handleRoleRevoked(event: RoleRevoked): void {}
+
