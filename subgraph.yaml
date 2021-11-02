@@ -1,4 +1,6 @@
 specVersion: 0.0.2
+description: Subgraph for bullrun babes
+repository: https://github.com/protofire/bullrunbabes-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
