@@ -1,4 +1,3 @@
-import { log } from "matchstick-as"
 import {
   CardAllocated,
   RandomInitiated,
@@ -6,26 +5,21 @@ import {
   RoleAdminChanged,
   RoleGranted,
   RoleRevoked
-} from "../generated/BullrunBabesCoordinator/BullrunBabesCoordinator"
-import { Card } from "../generated/schema"
+} from "../../generated/BullrunBabesCoordinator/BullrunBabesCoordinator"
+import { Card } from "../../generated/schema"
 
-
-export { runTests } from "./tests/mapping.test"
-
+// export { runTests } from "../tests/export.test"
 
 export function handleCardAllocated(event: CardAllocated): void {
-  log.warning("Here everything is ok", [])
   let tokenId = event.params.tokenId
-  log.warning("can't log this {}", [tokenId.toString()])
-  let cardId = tokenId.toHexString()
-  /*
+  let cardId = tokenId.toString()
+  let owner = event.params.owner
+  let serial = event.params.serial
   let cardTypeId = event.params.cardTypeId
   let cid = event.params.cid
-  let owner = event.params.owner
   let queryId = event.params.queryId
-  let serial = event.params.serial
   let tier = event.params.tier
-  */
+  
   let card = Card.load(cardId)
 
   if (!card) {
@@ -33,15 +27,14 @@ export function handleCardAllocated(event: CardAllocated): void {
   }
   
   card.tokenId = tokenId
-/* 
+  card.owner = owner
   card.serial = serial
+  card.cardTypeId = cardTypeId
   card.tier = tier
+  card.cid = cid
   card.queryId = queryId
   
-  card.owner = owner
-  card.cardTypeId = cardTypeId
-  card.cid = cid
-  */
+  
   card.save()
 
   // Note: If a handler doesn't require existing field values, it is faster

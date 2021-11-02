@@ -1,10 +1,239 @@
 type Card @entity {
   id: ID!
   tokenId: BigInt!
+  owner: Bytes!
   cardTypeId: BigInt
   cid: String
-  owner: Bytes
   queryId: Bytes
   serial: BigInt
   tier: BigInt
+}
+
+type BullrunBabesStats @entity {
+	"internal ID"
+	id: ID!
+	"set to true if contract was paused"
+	isPaused: Boolean!
+	"last pauser account"
+	lastPauser: Account
+	"last pause timestamp"
+	lastPauseDate: BigInt
+	"last unpauser account"
+	lastUnpauser: Account
+	"last unpause timestamp"
+	lastUnpauseDate: BigInt
+}
+
+type Role @entity {
+	"Internal ID used for indexation"
+	id: ID!
+	"Name of that role"
+	roleName: String!
+	"role holder account"
+	account: Account!
+	"account for who assigned it"
+	assignedBy: Account!
+	"assignation timestamp"
+	assignedTimestamp: BigInt!
+	"will be true if the role was revoked"
+	revoked: Boolean!
+	"account who revoked the role"
+	revokedBy: Account
+	"timestamp when the role was revoked"
+	revokedTimestamp: BigInt
+}
+
+interface Metadata {
+	"Internal ID used for indexation"
+	id: ID!
+}
+
+type Block implements Metadata @entity {
+	"Internal ID used for indexation"
+	id: ID!
+
+	"event timestamp"
+	timestamp: BigInt!	
+	
+	"Block's number"
+    number: BigInt!
+
+	"Transactions contained in this block"
+	transactions: [Transaction!] @derivedFrom(field: "block")
+
+	"Chain transactions info"
+	transactionsMeta: [TransactionMeta!] @derivedFrom(field: "block")
+}
+
+type TransactionMeta implements Metadata @entity {
+	"Internal ID used for indexation"
+	id: ID!
+
+	"Transaction's Block"
+	block: Block!
+
+	"Transaction's hash"
+	hash: Bytes
+
+	"Sender Address"
+	from: Bytes
+
+	"Transaction's gas"
+    gasLimit: BigInt
+
+	"Transaction's gas price"
+    gasPrice: BigInt
+}
+
+interface Erc721Token {
+	"Internal ID used for indexation"
+	id: ID!
+
+	"Token's current owner"
+	owner: Account!
+
+	"Current approval"
+	approval: Account
+
+	"Current burned status"
+	burned: Boolean
+
+	# More info about it?
+}
+
+type Token implements Erc721Token @entity{
+	"Internal ID used for indexation"
+	id: ID!
+
+	"Token's current owner"
+	owner: Account!
+
+	"Current approval"
+	approval: Account
+
+	"Current burned status"
+	burned: Boolean
+
+	"Tokens' visual representation"
+	uri: String
+}
+
+"A 721 holder account"
+type Account @entity {
+	"Internal ID used for indexation"
+	id: ID!
+
+	"Account evm address"
+	address: Bytes
+
+	"Owned tokens"
+	tokens: [Token!]! @derivedFrom(field: "owner")
+
+	"Approved tokens"
+	approved: [Token!]! @derivedFrom(field: "approval")
+	
+	"Transactions sent by this account"
+	sent: [Transaction!] @derivedFrom(field: "from")
+ 
+	"Transactions recieved by this account"
+	recieved: [Transaction!] @derivedFrom(field: "to")
+}
+
+type OperatorOwner @entity {
+	"Internal ID used for indexation"
+	id: ID! # Set to `${owner.id}-${operator.id}`
+
+	"Owner of the tokens"
+	owner: Account
+
+	"Approved to transfer tokens"
+	operator: Account!
+
+	"Was approved"
+	approved: Boolean
+}
+
+enum TranasctionType { 
+	MINT,
+	BURN,
+	TRANSFER
+ }
+
+
+interface Transaction {
+ 	"Internal ID used for indexation"
+	id: ID!
+
+	"Seller account"
+	from: Account
+
+	"Buyer account"
+	to: Account
+
+	"Current transaction type"
+	type: TranasctionType!
+
+	"Related block"
+	block: Block!
+}
+
+
+type Mint implements Transaction @entity {
+	"Internal ID used for indexation"
+	id: ID!
+
+	"Seller account"
+	from: Account
+
+	"Buyer account"
+	to: Account
+
+	"Token traded"
+	token: Token
+
+	"Related block"
+	block: Block!
+
+	"Current transaction type"
+	type: TranasctionType!
+}
+
+type Burn implements Transaction @entity {
+	"Internal ID used for indexation"
+	id: ID!
+
+	"Seller account"
+	from: Account
+
+	"Buyer account"
+	to: Account
+
+	"Token traded"
+	token: Token
+
+	"Related block"
+	block: Block!
+
+	"Current transaction type"
+	type: TranasctionType!
+}
+
+type Transfer implements Transaction @entity {
+	"Internal ID used for indexation"
+	id: ID!
+
+	"Seller account"
+	from: Account
+
+	"Buyer account"
+	to: Account
+
+	"Token traded"
+	token: Token
+
+	"Related block"
+	block: Block!
+
+	"Current transaction type"
+	type: TranasctionType!
 }
