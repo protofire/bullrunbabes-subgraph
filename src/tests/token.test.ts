@@ -6,11 +6,13 @@ import { ZERO_ADDRESS } from '@protofire/subgraph-toolkit'
 import { log } from "matchstick-as"
 import { Token } from "../../generated/schema"
 import { runTransactionsTests } from "./transactions.test"
+import { runRolesTests } from "./roles.test"
 
 export function runTokenTests() :void {
 
     log.info("Running Transaction Tests", [])
     runTransactionsTests()
+    runRolesTests()
 
     test("Handle approval event test", () => {
         let tokenId = BigInt.fromI32(33)

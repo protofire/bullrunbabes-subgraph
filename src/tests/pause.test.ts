@@ -16,7 +16,7 @@ export function runPauseTests() :void {
         log.warning("statsId: {}", [statsId])
         log.warning("isPaused: {}", [statsIsPaused])
 
-        //assert.fieldEquals("BullrunBabesStats", statsId, "isPaused", "false")
+        //assert.fieldEquals("BullrunBabesStat ", statsId, "isPaused", "false")
 
         let mockEvent = newMockEvent();
         let newPausedEvent = new Paused(
@@ -38,10 +38,10 @@ export function runPauseTests() :void {
         handlePaused(newPausedEvent)
 
         assert.fieldEquals("Account", account, "id", account)
-        assert.fieldEquals("BullrunBabesStats", "current", "id", "current")
-        assert.fieldEquals("BullrunBabesStats", "current", "isPaused", "true")
-        assert.fieldEquals("BullrunBabesStats", "current", "lastPauser", account)
-        assert.fieldEquals("BullrunBabesStats", "current", "lastPauseDate", blockTimestamp)
+        assert.fieldEquals("BullrunBabesStat", "current", "id", "current")
+        assert.fieldEquals("BullrunBabesStat", "current", "isPaused", "true")
+        assert.fieldEquals("BullrunBabesStat", "current", "lastPauser", account)
+        assert.fieldEquals("BullrunBabesStat", "current", "lastPauseDate", blockTimestamp)
         
         clearStore()
     })
@@ -70,10 +70,10 @@ export function runPauseTests() :void {
         handleUnpaused(newUnpausedEvent)
 
         assert.fieldEquals("Account", account, "id", account)
-        assert.fieldEquals("BullrunBabesStats", "current", "id", "current")
-        assert.fieldEquals("BullrunBabesStats", "current", "isPaused", "false")
-        assert.fieldEquals("BullrunBabesStats", "current", "lastUnpauser", account)
-        assert.fieldEquals("BullrunBabesStats", "current", "lastUnpauseDate", blockTimestamp)
+        assert.fieldEquals("BullrunBabesStat", "current", "id", "current")
+        assert.fieldEquals("BullrunBabesStat", "current", "isPaused", "false")
+        assert.fieldEquals("BullrunBabesStat", "current", "lastUnpauser", account)
+        assert.fieldEquals("BullrunBabesStat", "current", "lastUnpauseDate", blockTimestamp)
         
         clearStore()
     })

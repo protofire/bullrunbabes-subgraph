@@ -5,11 +5,6 @@ import { handleTransfer } from "../mappings/token"
 import { ZERO_ADDRESS } from '@protofire/subgraph-toolkit'
 
 export function runTransactionsTests() :void {
-    test( "simple Transactions test", () => {
-        assert.assertTrue(true)
-        clearStore()
-    })
-
     test("Handle transfer event - transaction meta test", () => {
         let tokenId = BigInt.fromI32(44)
         let from = ZERO_ADDRESS

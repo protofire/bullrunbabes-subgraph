@@ -64,7 +64,7 @@ export function handlePaused(event: Paused): void {
 }
 
 export function handleRoleAdminChanged(event: RoleAdminChanged): void {
-	let role = event.params.role.toString()
+	let role = event.params.role.toHex()
 	let prev = event.params.previousAdminRole
 	let curr = event.params.newAdminRole
 	let timestamp = event.block.timestamp
@@ -83,7 +83,7 @@ export function handleRoleAdminChanged(event: RoleAdminChanged): void {
 }
 
 export function handleRoleGranted(event: RoleGranted): void {
-	let role = event.params.role.toString()
+	let role = event.params.role.toHex()
 	let accountId = event.params.account
 	let senderId = event.params.sender
 	let timestamp = event.block.timestamp
@@ -102,7 +102,7 @@ export function handleRoleGranted(event: RoleGranted): void {
 }
 
 export function handleRoleRevoked(event: RoleRevoked): void {
-	let role = event.params.role.toString()
+	let role = event.params.role.toHex()
 	let accountId = event.params.account
 	let senderId = event.params.sender
 	let timestamp = event.block.timestamp

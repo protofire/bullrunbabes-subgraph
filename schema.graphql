@@ -9,7 +9,7 @@ type Card @entity {
   tier: BigInt
 }
 
-type BullrunBabesStats @entity {
+type BullrunBabesStat @entity {
 	"internal ID"
 	id: ID!
 	"set to true if contract was paused"
@@ -27,8 +27,6 @@ type BullrunBabesStats @entity {
 type Role @entity {
 	"Internal ID used for indexation"
 	id: ID!
-	"Name of that role"
-	roleName: String!
 	"role holder account"
 	account: Account!
 	"account for who assigned it"

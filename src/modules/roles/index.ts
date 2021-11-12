@@ -8,7 +8,6 @@ export namespace roles {
         if (roleInstance == null) {
             roleInstance = new Role(role)
             roleInstance.revoked = false
-            roleInstance.roleName = role
         }
         
         return roleInstance as Role

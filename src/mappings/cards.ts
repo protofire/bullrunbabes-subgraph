@@ -8,7 +8,7 @@ import {
 } from "../../generated/BullrunBabesCoordinator/BullrunBabesCoordinator"
 import { Card } from "../../generated/schema"
 
-// export { runTests } from "../tests/export.test"
+//export { runTests } from "../tests/export.test"
 
 export function handleCardAllocated(event: CardAllocated): void {
   let tokenId = event.params.tokenId

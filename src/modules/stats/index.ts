@@ -1,16 +1,16 @@
-import { BullrunBabesStats } from '../../../generated/schema'
+import { BullrunBabesStat } from '../../../generated/schema'
 
 export namespace stats {
 
-	export function getOrCreateStats(): BullrunBabesStats {
+	export function getOrCreateStats(): BullrunBabesStat {
 		let statsId = "current"
 
-		let stats = BullrunBabesStats.load(statsId)
+		let stats = BullrunBabesStat.load(statsId)
 		if (stats == null) {
-			stats = new BullrunBabesStats(statsId)
+			stats = new BullrunBabesStat(statsId)
 		}
 		stats.isPaused = false
-		return stats as BullrunBabesStats
+		return stats as BullrunBabesStat
 	}
 	
 }
