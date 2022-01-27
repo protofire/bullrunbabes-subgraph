@@ -2,38 +2,25 @@ import {
   CardAllocated,
   RandomInitiated,
   RandomReceived,
-  RoleAdminChanged,
-  RoleGranted,
-  RoleRevoked
 } from "../../generated/BullrunBabesCoordinator/BullrunBabesCoordinator"
-import { Card } from "../../generated/schema"
-
-//export { runTests } from "../tests/export.test"
+import { cards } from "../modules/cards"
+import { tiers } from "../utils/tiers"
 
 export function handleCardAllocated(event: CardAllocated): void {
   let tokenId = event.params.tokenId
-  let cardId = tokenId.toString()
-  let owner = event.params.owner
   let serial = event.params.serial
   let cardTypeId = event.params.cardTypeId
   let cid = event.params.cid
   let queryId = event.params.queryId
   let tier = event.params.tier
-  
-  let card = Card.load(cardId)
 
-  if (!card) {
-    card = new Card(cardId)
-  }
-  
-  card.tokenId = tokenId
-  card.owner = owner
+  let card = cards.getOrCreateToken(tokenId.toString())
+
   card.serial = serial
   card.cardTypeId = cardTypeId
-  card.tier = tier
+  card.tier = tiers.tierNameOf(tier)
   card.cid = cid
   card.queryId = queryId
-  
   
   card.save()
 
@@ -80,10 +67,4 @@ export function handleCardAllocated(event: CardAllocated): void {
 export function handleRandomInitiated(event: RandomInitiated): void {}
 
 export function handleRandomReceived(event: RandomReceived): void {}
-
-export function handleRoleAdminChanged(event: RoleAdminChanged): void {}
-
-export function handleRoleGranted(event: RoleGranted): void {}
-
-export function handleRoleRevoked(event: RoleRevoked): void {}
 

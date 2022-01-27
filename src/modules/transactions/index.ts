@@ -1,17 +1,17 @@
 import { ADDRESS_ZERO } from '@protofire/subgraph-toolkit'
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
-	Mint,
-	Burn,
-	Transfer,
+    Buy,
+    Draw, Trade,
 } from "../../../generated/schema";
+import { datetime } from '../datetime';
 
 export namespace transactions {
 
 	export namespace constants {
-		export let TRANSACTION_MINT = "MINT"
-		export let TRANSACTION_BURN = "BURN"
-		export let TRANSACTION_TRANSFER = "TRANSFER"
+		export let TRANSACTION_DRAW = "DRAW"
+		export let TRANSACTION_TRADE = "TRADE"
+		export let TRANSACTION_BUY = "BUY"
 	}
 
 	export namespace helpers {
@@ -23,38 +23,53 @@ export namespace transactions {
 	}
 
 	export function getNewMint(
-		to: string, token: string, timestamp: BigInt, blockId: string
-	): Mint {
-		let transaction = new Mint(helpers.getNewTransactionId(ADDRESS_ZERO, to, timestamp))
+		to: string, token: string, timestamp: BigInt
+	): Draw {
+		let transaction = new Draw(helpers.getNewTransactionId(ADDRESS_ZERO, to, timestamp))
 		transaction.from = ADDRESS_ZERO
 		transaction.to = to
-		transaction.token = token
-		transaction.block = blockId
-		transaction.type = constants.TRANSACTION_MINT
-		return transaction as Mint
+		transaction.card = token
+        transaction.timestamp = timestamp
+		transaction.type = constants.TRANSACTION_DRAW
+        let date = datetime.getOrCreateDate(timestamp)
+        date.save()
+
+        transaction.date = date.id
+        
+		return transaction as Draw
 	}
 
-	export function getNewBurn(from: string, token: string, timestamp: BigInt, blockId: string): Burn {
-		let transaction = new Burn(helpers.getNewTransactionId(from, ADDRESS_ZERO, timestamp))
+	export function getNewBurn(from: string, token: string, timestamp: BigInt): Trade {
+		let transaction = new Trade(helpers.getNewTransactionId(from, ADDRESS_ZERO, timestamp))
 		transaction.from = from
 		transaction.to = ADDRESS_ZERO
-		transaction.token = token
-		transaction.block = blockId
-		transaction.type = constants.TRANSACTION_BURN
-		return transaction as Burn
+		transaction.card = token
+        transaction.timestamp = timestamp
+		transaction.type = constants.TRANSACTION_TRADE
+        let date = datetime.getOrCreateDate(timestamp)
+        date.save()
+
+        transaction.date = date.id
+        
+		return transaction as Trade
 	}
 
 	export function getNewTransfer(
 		from: string, to: string,
-		token: string, timestamp: BigInt, blockId: string
-	): Transfer {
-		let transaction = new Transfer(helpers.getNewTransactionId(from, to, timestamp))
+		token: string, timestamp: BigInt
+	): Buy {
+		let transaction = new Buy(helpers.getNewTransactionId(from, to, timestamp))
 		transaction.from = from
 		transaction.to = to
-		transaction.token = token
-		transaction.block = blockId
-		transaction.type = constants.TRANSACTION_TRANSFER
-		return transaction as Transfer
+		transaction.card = token
+        transaction.timestamp = timestamp
+		transaction.type = constants.TRANSACTION_BUY
+        let date = datetime.getOrCreateDate(timestamp)
+        date.save()
+
+        transaction.date = date.id
+        
+		return transaction as Buy
 	}
 
 }
