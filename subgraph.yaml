@@ -19,9 +19,6 @@ dataSources:
         - CardAllocated
         - RandomInitiated
         - RandomReceived
-        - RoleAdminChanged
-        - RoleGranted
-        - RoleRevoked
       abis:
         - name: BullrunBabesCoordinator
           file: ./abis/BullrunBabesCoordinator.json
@@ -32,12 +29,6 @@ dataSources:
           handler: handleRandomInitiated
         - event: RandomReceived(bytes32)
           handler: handleRandomReceived
-        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-          handler: handleRoleAdminChanged
-        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleGranted
-        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleRevoked
       file: ./src/mappings/cards.ts
   - kind: ethereum/contract
     name: BullrunBabesToken

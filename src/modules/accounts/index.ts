@@ -1,5 +1,5 @@
 import { Bytes } from '@graphprotocol/graph-ts';
-import { Account, OperatorOwner } from '../../../generated/schema'
+import { Account } from '../../../generated/schema'
 
 export namespace accounts {
 
@@ -20,24 +20,7 @@ export namespace accounts {
 		let account = Account.load(accountId)
 		if (account == null) {
 			account = new Account(accountId)
-			account.address = accountAddress
 		}
 		return account as Account
-	}
-
-
-	export function getOrCreateOperatorOwner(
-		ownerId: string, operatorId: string,
-		approved: boolean
-	): OperatorOwner {
-		let operatorOwnerId = helpers.getOperatorOwnerId(ownerId, operatorId)
-		let operatorOwner = OperatorOwner.load(operatorOwnerId)
-		if (operatorOwner == null) {
-			operatorOwner = new OperatorOwner(operatorOwnerId)
-			operatorOwner.owner = ownerId
-			operatorOwner.operator = operatorId
-		}
-		operatorOwner.approved = approved
-		return operatorOwner as OperatorOwner
 	}
 }
